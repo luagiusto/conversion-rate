@@ -6,10 +6,8 @@ from funciones import load_comp_data, to_ralas, process_text, random_search
 from decouple import config
 from sklearn.model_selection import train_test_split
 
-
 # Cargar los datos de competencia
 df = load_comp_data(config("PROJECT_ROOT") + '/data', sample_frac=0.2)
-
 
 # Convertir columnas a tipo 'object'
 df['product_id'] = df['product_id'].astype('object')
@@ -29,7 +27,6 @@ df["print_weekday"] = df['print_server_timestamp'].dt.weekday < 5
 df['print_day_of_week'] = df['print_server_timestamp'].dt.day_name()
 df['print_server_numeric'] = df['print_server_timestamp'].values.astype("float64")
 
-
 # df printmonth unique values
 df['conversion'].unique()
 
@@ -38,7 +35,6 @@ df['conversion'] = df['conversion'].astype(float)
 # print_day_month to datetime
 df['print_day_month'] = pd.to_datetime(df['print_day_month'], format='%d-%m')
 mean_conversion_by_day_month = df.groupby('print_day_month')['conversion'].mean().reset_index()
-
 
 df["is_pdp"] = df["is_pdp"].astype('float').fillna(-1).astype('int')
 df['user_id'] = np.where(df['user_id'].isna(), "-1", df['user_id'])
@@ -117,13 +113,12 @@ df['print_hour_between_8_and_18'] = df['print_hour'].between(8, 18).astype(int)
 df['log_price_between_8.5_and_11'] = df['log_price'].between(8.5, 11).astype(int)
 
 
-#Plot distribution of variables by conversion
-# Plotting the distribution of variables by conversion
-# Variables to plot
+#Plottear distribucion de variables por conversion
+# Variables a plottear
 #vars_to_plot = ['price', 'available_quantity', 'sold_quantity', 'log_price', 'price_per_quantity', 'category_count',
 #                'avg_price_by_domain']
 
-# Plotting the distribution of variables by conversion
+# Plottear la distribucion de variables por conversion
 #for var in df.columns:
 #    try:
 #        plt.figure(figsize=(12, 6))
@@ -169,8 +164,6 @@ df.drop(cols_to_drop, axis=1, inplace=True)
 
 # Drop duplicate columns
 df = df.loc[:, ~df.columns.duplicated()]
-
-
 
 # Separar conjunto de datos en entrenamiento y evaluación
 df_train = df.loc[df["train_eval"] == "train"]
